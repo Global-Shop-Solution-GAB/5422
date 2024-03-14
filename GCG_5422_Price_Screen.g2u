@@ -1,0 +1,305 @@
+Program.Sub.ScreenSU.Start
+Gui.F_ContractPrice..Create
+Gui.F_ContractPrice..Size(7170,4095)
+Gui.F_ContractPrice..MinX(0)
+Gui.F_ContractPrice..MinY(0)
+Gui.F_ContractPrice..Position(0,0)
+Gui.F_ContractPrice..BackColor(-2147483633)
+Gui.F_ContractPrice..MousePointer(0)
+Gui.F_ContractPrice..Event(UnLoad,Form_UnLoad)
+Gui.F_ContractPrice..Caption("Contract Price")
+Gui.F_ContractPrice..MaxButton(False)
+Gui.F_ContractPrice.GsGcDisplay.Create(GsGridControl)
+Gui.F_ContractPrice.GsGcDisplay.Size(6795,3360)
+Gui.F_ContractPrice.GsGcDisplay.Position(60,75)
+Gui.F_ContractPrice.GsGcDisplay.Anchor(15)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+v.Global.sFilePath.Declare
+v.Global.bResetRow.Declare
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+f.Intrinsic.Control.Try
+	f.Intrinsic.Control.CallSub(createDisplay)
+	f.Intrinsic.Control.CallSub(LoadPrices)
+	f.Intrinsic.Control.CallSub(checkLinesPrice)
+	f.Intrinsic.Control.CallSub(loadGrid)
+	f.Intrinsic.Control.CallSub(loadProperties)
+
+	gui.F_ContractPrice..Show
+	f.Intrinsic.Control.CallSub(continueUpdate)
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.Main.End
+
+Program.Sub.LoadPrices.Start
+v.Local.sData.Declare
+v.Local.sSQL.Declare
+v.Local.bExists.Declare
+f.Intrinsic.Control.Try
+	f.Intrinsic.String.Build("{0}\GCG5422_{1}{2}.txt", v.Caller.FilesDir, v.Caller.CompanyCode, v.Caller.Terminal, v.Global.sFilePath)
+
+
+	f.Intrinsic.File.Exists(v.Global.sFilePath, v.Local.bExists)
+	f.Intrinsic.Control.If(v.Local.bExists)
+		f.Intrinsic.File.File2String(v.Global.sFilePath, v.Local.sData)
+		f.Intrinsic.Control.If(v.Local.sData.Length, =, 7)
+			f.ODBC.Connection!con.OpenCompanyConnection
+'				f.Intrinsic.String.Build("Select * from V_ORDER_HEADER where Order_no = '{0}'", v.Local.sData, v.Local.sSQL)
+'				f.Data.DataTable.CreateFromSQL("orderDT", "con", v.Local.sSQL, true)
+				f.Intrinsic.String.Build("Select * from V_ORDER_LINES where Order_no = '{0}'", v.Local.sData, v.Local.sSQL)
+				f.Data.DataTable.CreateFromSQL("lineDT", "con", v.Local.sSQL, true)
+				v.Local.sSQL.Set("Select * from GCG_5422_Contract_P order by Part, QTY asc")
+				f.Data.DataTable.CreateFromSQL("priceDT", "con", v.Local.sSQL, true)
+				f.Data.DataView.Create("priceDT", "priceDV", 22)
+			f.ODBC.Connection!con.Close
+			
+		f.Data.DataTable.Create("tempDT", true)
+		f.Data.DataTable.AddColumn("tempDT", "Part", "String")
+		f.Data.DataTable.AddColumn("tempDT", "QtyOrdered", "Long")
+		f.Data.DataTable.AddColumn("tempDT", "PriceOrdered", "Float")
+		f.Data.DataTable.AddColumn("tempDT", "ContractQTY", "Long")
+		f.Data.DataTable.AddColumn("tempDT", "ContractPrice", "Float")
+		f.Data.DataTable.AddColumn("tempDT", "FormatCol", "Long")
+						
+		f.Intrinsic.Control.EndIf
+	f.Intrinsic.Control.Else
+		f.Intrinsic.UI.Msgbox("No file created.")
+		f.Intrinsic.Control.End
+	f.Intrinsic.Control.EndIf
+
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.LoadPrices.End
+
+Program.Sub.checkLinesPrice.Start
+v.Local.iCnt.Declare
+v.Local.iCntContract.Declare
+v.Local.fPrice.Declare
+v.Local.iQty.Declare
+v.Local.iTotalQty.Declare
+v.Local.sPart.Declare
+v.Local.sCustomer.Declare
+v.Local.sFilter.Declare
+v.Local.fContractPrice.Declare
+v.Local.fContractQty.Declare
+v.Local.bQty.Declare
+f.Intrinsic.Control.Try
+
+	f.Intrinsic.Control.If(v.DataTable.lineDT.RowCount, >, 0)
+	
+		f.Data.DataTable.Compute("lineDT", "Sum(Qty_Ordered)", "", v.Local.iTotalQty)
+		
+		f.Intrinsic.Control.For(v.Local.iCnt, 0, v.DataTable.lineDT.RowCount--, 1)
+			v.Local.sPart.Set(v.DataTable.lineDT(v.Local.iCnt).Part!FieldVal)
+			v.Local.sCustomer.Set(v.DataTable.lineDT(v.Local.iCnt).Customer!FieldVal)
+			v.Local.fPrice.Set(v.DataTable.lineDT(v.Local.iCnt).Price!FieldVal)
+			v.Local.iQty.Set(v.DataTable.lineDT(v.Local.iCnt).Qty_Ordered!FieldVal)
+			
+			f.Intrinsic.String.Build("Part = '{0}' and customer = '{1}'", v.Local.sPart, v.Local.sCustomer, v.Local.sFilter)
+			f.Data.DataView.SetFilter("priceDT", "priceDV", v.Local.sFilter)
+			f.Data.DataView.SetSort("priceDT", "priceDV", "QTY asc")
+			
+			f.Intrinsic.String.Build("Part = '{0}' ", v.Local.sPart, v.Local.sFilter)
+			f.Data.DataView.Create("displayDT", "qtyCheck", 22, v.Local.sFilter,"")
+			f.Intrinsic.Control.If(v.DataView.displayDT!qtyCheck.RowCount, =, 1)
+				f.Intrinsic.Control.If(v.DataView.displayDT!qtyCheck(0).QtyOrdered!FieldVal, <>, v.Local.iQty)
+					f.Data.DataView.DeleteRow("displayDT", "qtyCheck", 0)
+				f.Intrinsic.Control.EndIf
+			f.Intrinsic.Control.EndIf
+			f.Data.DataView.Close("displayDT", "qtyCheck")
+			
+			f.Intrinsic.Control.If(v.DataView.priceDT!priceDV.RowCount, >, 0)
+
+
+				f.Data.DataView.ToDataTable("priceDT", "priceDV", "testDT")
+					f.Intrinsic.Control.For(v.Local.iCntContract, v.DataTable.testDT.RowCount--, 0, -1)
+						f.Intrinsic.Control.If(v.Local.iTotalQty, =>, v.DataTable.testDT(v.Local.iCntContract).Qty!FieldVal)
+							v.Local.fContractPrice.Set(v.DataTable.testDT(v.Local.iCntContract).ContractPrice!FieldVal)
+							v.Local.fContractQty.Set(v.DataTable.testDT(v.Local.iCntContract).Qty!FieldVal)
+							v.Local.iCntContract.Set(0)
+										
+							
+							f.Intrinsic.Control.If(v.Local.fPrice, =, v.Local.fContractPrice)
+								f.Data.DataTable.AddRow("tempDT", "Part", v.Local.sPart, "QtyOrdered", v.Local.iQty, "PriceOrdered", v.Local.fPrice, "ContractQTY", v.Local.fContractQty, "ContractPrice", v.Local.fContractPrice, "FormatCol", "1")
+							f.Intrinsic.Control.Else
+								f.Data.DataTable.AddRow("tempDT", "Part", v.Local.sPart, "QtyOrdered", v.Local.iQty, "PriceOrdered", v.Local.fPrice, "ContractQTY", v.Local.fContractQty, "ContractPrice", v.Local.fContractPrice,  "FormatCol", "0")
+							f.Intrinsic.Control.EndIf
+							
+							f.Intrinsic.String.Build("Part = '{0}' and QtyOrdered = '{1}'", v.Local.sPart, v.Local.iQty, v.Local.sFilter)
+							f.Data.DataView.Create("displayDT", "singlePartDV", 22, v.Local.sFilter, "")
+							
+							f.Intrinsic.Control.If(v.DataView.displayDT!singlePartDV.RowCount, >, 0)
+							
+								f.Intrinsic.Control.If(v.DataView.displayDT!singlePartDV(0).QtyOrdered!FieldVal, <>, v.Local.iQty)
+									v.Global.bResetRow.Set(True)
+								f.Intrinsic.Control.EndIf
+								
+								f.Intrinsic.Control.If(v.DataView.displayDT!singlePartDV(0).PriceOrdered!FieldVal, <>, v.Local.fPrice)
+									v.Global.bResetRow.Set(True)
+								f.Intrinsic.Control.EndIf
+							f.Intrinsic.Control.EndIf
+							
+							f.Data.DataView.Close("displayDT", "singlePartDV")
+						f.Intrinsic.Control.EndIf
+						
+					f.Intrinsic.Control.Next(v.Local.iCntContract)
+				f.Data.DataTable.Close("testDT")
+
+			f.Intrinsic.Control.EndIf		
+		f.Intrinsic.Control.Next(v.Local.iCnt)
+	f.Intrinsic.Control.EndIf
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.checkLinesPrice.End
+
+Program.Sub.loadGrid.Start
+f.Intrinsic.Control.Try
+	gui.F_ContractPrice.GsGcDisplay.AddGridviewFromDatatable("displayGV", "displayDT")
+	gui.F_ContractPrice.GsGcDisplay.MainView("displayGV")
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.loadGrid.End
+
+Program.Sub.Form_UnLoad.Start
+v.Local.bFileExist.Declare
+f.Intrinsic.Control.Try
+	f.Intrinsic.File.Exists(v.Global.sFilePath, v.Local.bFileExist)
+	f.Intrinsic.Control.If(v.Local.bFileExist)
+		f.Intrinsic.File.DeleteFile(v.Global.sFilePath)
+	f.Intrinsic.Control.EndIf
+	
+	f.Intrinsic.Control.End
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.Form_UnLoad.End
+
+Program.Sub.continueUpdate.Start
+v.Local.bContinue.Declare
+v.Local.bContinue.Set(false)
+f.Intrinsic.Control.Try
+
+	f.Intrinsic.Control.DoUntil(v.Local.bContinue)
+		f.Data.DataTable.Close("lineDT")
+		f.Data.DataView.Close("priceDT", "priceDV")
+		f.Data.DataTable.Close("priceDT")
+		f.Data.DataTable.Close("tempDT")
+		
+		f.Intrinsic.Control.CallSub(LoadPrices)
+		f.Intrinsic.Control.CallSub(checkLinesPrice)
+	'	Function.Intrinsic.Debug.Stop
+		
+		f.Intrinsic.Control.If(v.DataTable.displayDT.RowCount, <>, v.DataTable.tempDT.RowCount)
+			f.Data.DataTable.DeleteRow("displayDT")
+			f.Data.DataTable.Merge("tempDT", "displayDT", false,1)
+		f.Intrinsic.Control.EndIf
+		
+		f.Intrinsic.Control.If(v.Global.bResetRow)
+			f.Data.DataTable.DeleteRow("displayDT")
+			f.Data.DataTable.Merge("tempDT", "displayDT", false,1)
+			v.Global.bResetRow.Set(False)
+		f.Intrinsic.Control.EndIf
+		
+
+		
+	f.Intrinsic.Control.Loop
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.continueUpdate.End
+
+Program.Sub.createDisplay.Start
+f.Intrinsic.Control.Try
+		f.Data.DataTable.Create("displayDT", true)
+		f.Data.DataTable.AddColumn("displayDT", "Part", "String")
+		f.Data.DataTable.AddColumn("displayDT", "QtyOrdered", "Long")
+		f.Data.DataTable.AddColumn("displayDT", "PriceOrdered", "Float")
+		f.Data.DataTable.AddColumn("displayDT", "ContractQTY", "Long")
+		f.Data.DataTable.AddColumn("displayDT", "ContractPrice", "Float")
+		f.Data.DataTable.AddColumn("displayDT", "FormatCol", "Long")
+		
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.createDisplay.End
+
+Program.Sub.ErrorMsg.Start
+v.Local.sError.Declare
+
+'Closes ODBC connection, default to connection : "con"
+f.Intrinsic.Control.If(v.ODBC!con.State, =, 1)
+	f.ODBC.Connection!con.Close
+f.Intrinsic.Control.EndIf
+
+
+'Generic Error message.
+f.Intrinsic.String.Build("Project ContractPrice.g2u {0}{0}Subroutine: {1}{0}Error: {2} with Description: {3}", v.Ambient.NewLine, v.Args.CurrentSub, v.Ambient.ErrorNumber, v.Ambient.ErrorDescription, v.Local.sError)
+f.Intrinsic.UI.Msgbox(v.Local.sError)
+
+f.Intrinsic.Control.CallSub(Form_UnLoad)
+Program.Sub.ErrorMsg.End
+
+Program.Sub.loadProperties.Start
+v.Local.iCnt.Declare
+v.Local.sFields.Declare
+f.Intrinsic.Control.Try
+
+	f.Intrinsic.String.Split(v.DataTable.displayDT.FieldNames, "*!*", v.Local.sFields)
+	f.Intrinsic.Control.For(v.Local.iCnt, 0, v.Local.sFields.UBound, 1)
+		gui.F_ContractPrice.GsGcDisplay.SetColumnProperty("displayGV", v.Local.sFields(v.Local.iCnt), "HeaderFontBold", True)
+		gui.F_ContractPrice.GsGcDisplay.SetColumnProperty("displayGV", v.Local.sFields(v.Local.iCnt), "ReadOnly", True)
+		gui.F_ContractPrice.GsGcDisplay.SetColumnProperty("displayGV", v.Local.sFields(v.Local.iCnt), "AllowEdit", False)
+		gui.F_ContractPrice.GsGcDisplay.SetColumnProperty("displayGV", v.Local.sFields(v.Local.iCnt), "HeaderHAlignment", Center)
+		gui.F_ContractPrice.GsGcDisplay.SetColumnProperty("displayGV", v.Local.sFields(v.Local.iCnt), "CellHAlignment", Center)
+		gui.F_ContractPrice.GsGcDisplay.SetColumnProperty("displayGV", v.Local.sFields(v.Local.iCnt), "AllowFocus", False)
+'		gui.F_ContractPrice.GsGcDisplay.SetColumnProperty("displayGV", v.Local.sFields(v.Local.iCnt), "HeaderFontBold", True)
+'		gui.F_ContractPrice.GsGcDisplay.SetColumnProperty("displayGV", v.Local.sFields(v.Local.iCnt), "HeaderFontBold", True)
+	f.Intrinsic.Control.Next(v.Local.iCnt)
+	
+	'CellHAlignment
+	gui.F_ContractPrice.GsGcDisplay.SetColumnProperty("displayGV", "Part", "CellHAlignment", Left)
+	gui.F_ContractPrice.GsGcDisplay.SetColumnProperty("displayGV", "QtyOrdered", "CellHAlignment", Center)
+	gui.F_ContractPrice.GsGcDisplay.SetColumnProperty("displayGV", "PriceOrdered", "CellHAlignment", Right)
+	gui.F_ContractPrice.GsGcDisplay.SetColumnProperty("displayGV", "ContractQTY", "CellHAlignment", Center)
+	gui.F_ContractPrice.GsGcDisplay.SetColumnProperty("displayGV", "ContractPrice", "CellHAlignment", Right)
+	
+	'Caption
+	gui.F_ContractPrice.GsGcDisplay.SetColumnProperty("displayGV", "Part", "Caption", "Part")
+	gui.F_ContractPrice.GsGcDisplay.SetColumnProperty("displayGV", "QtyOrdered", "Caption", "Order: Qty")
+	gui.F_ContractPrice.GsGcDisplay.SetColumnProperty("displayGV", "PriceOrdered", "Caption", "Order: Price")
+	gui.F_ContractPrice.GsGcDisplay.SetColumnProperty("displayGV", "ContractQTY", "Caption",  "Contract Qty")
+	gui.F_ContractPrice.GsGcDisplay.SetColumnProperty("displayGV", "ContractPrice", "Caption", "Contract Price")
+	
+	gui.F_ContractPrice.GsGcDisplay.SetColumnProperty("displayGV", "FormatCol", "Visible", False)
+	
+	gui.F_ContractPrice.GsGcDisplay.AddStyleFormatCondition("displayGV", "FormatCol", "priceCheck", "equal", "1")
+	gui.F_ContractPrice.GsGcDisplay.SetStyleFormatConditionProperty("displayGV",  "FormatCol", "priceCheck", "ApplyToRow", true)
+	gui.F_ContractPrice.GsGcDisplay.SetStyleFormatConditionProperty("displayGV",  "FormatCol", "priceCheck", "backcolor", "Lime")	
+	
+	gui.F_ContractPrice.GsGcDisplay.AddSummaryItem("displayGV", "QtyOrdered",  "TagSum", "Sum", "", "")
+	
+	gui.F_ContractPrice.GsGcDisplay.SetGridviewProperty("displayGV", "MultiSelectMode", 1)
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.loadProperties.End
+
+Program.Sub.cmdRefresh_Click.Start
+f.Intrinsic.Control.Try
+	f.Data.DataTable.Close("lineDT")
+	f.Intrinsic.Control.If(v.ODBC!con.State, =, 1)
+	f.ODBC.Connection!con.Close
+f.Intrinsic.Control.EndIf
+	f.Intrinsic.Control.CallSub(LoadPrices)
+	f.Intrinsic.Control.CallSub(checkLinesPrice)
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.cmdRefresh_Click.End
