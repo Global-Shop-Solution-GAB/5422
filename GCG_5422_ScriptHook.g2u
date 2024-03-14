@@ -1,0 +1,82 @@
+Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+f.Intrinsic.Control.Try
+	f.Intrinsic.Control.SelectCase(v.Caller.Hook)
+		f.Intrinsic.Control.Case(12440)
+
+			v.Passed.000162.Set("Contract Price")
+			F.Intrinsic.UI.ChangeCallerProperty(V.passed.000162, "HIDE", 1)
+			'Enable for Supervsr
+			f.Intrinsic.Control.If(v.Caller.User.Trim, =, "SUPERVSR")
+				F.Intrinsic.UI.ChangeCallerProperty(V.passed.000162, "HIDE", 0)
+			f.Intrinsic.Control.EndIf
+			'Enable for Supervsr
+			f.Intrinsic.Control.If(v.Caller.User.Trim, =, "BJACOB")
+				F.Intrinsic.UI.ChangeCallerProperty(V.passed.000162, "HIDE", 0)
+			f.Intrinsic.Control.EndIf
+			'Enable for Supervsr
+			f.Intrinsic.Control.If(v.Caller.User.Trim, =, "LGRESSET")
+				F.Intrinsic.UI.ChangeCallerProperty(V.passed.000162, "HIDE", 0)
+			f.Intrinsic.Control.EndIf
+			'Enable for Supervsr 
+			f.Intrinsic.Control.If(v.Caller.User.Trim, =, "RGINN")
+				F.Intrinsic.UI.ChangeCallerProperty(V.passed.000162, "HIDE", 0)
+			f.Intrinsic.Control.EndIf	
+			'Enable for Supervsr 
+			f.Intrinsic.Control.If(v.Caller.User.Trim, =, "CJONES")
+				F.Intrinsic.UI.ChangeCallerProperty(V.passed.000162, "HIDE", 0)
+			f.Intrinsic.Control.EndIf	
+		f.Intrinsic.Control.Case(12620)
+			f.Intrinsic.Control.CallSub(UpdatePrice)
+	f.Intrinsic.Control.EndSelect
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.Main.End
+
+Program.Sub.ErrorMsg.Start
+v.Local.sError.Declare
+
+'Closes ODBC connection, default to connection : "con"
+f.Intrinsic.Control.If(v.ODBC!con.State, =, 1)
+	f.ODBC.Connection!con.Close
+f.Intrinsic.Control.EndIf
+
+'Generic Error message.
+f.Intrinsic.String.Build("Project ProjectName.g2u {0}{0}Subroutine: {1}{0}Error: {2} with Description: {3}", v.Ambient.NewLine, v.Args.CurrentSub, v.Ambient.ErrorNumber, v.Ambient.ErrorDescription, v.Local.sError)
+f.Intrinsic.UI.Msgbox(v.Local.sError)
+Program.Sub.ErrorMsg.End
+
+Program.Sub.UpdatePrice.Start
+v.Local.sPart.Declare
+v.Local.sSQL.Declare
+v.Local.sOrderNo.Declare
+v.Local.fPrice.Declare
+v.Local.sQty.Declare
+v.Local.sCustomer.Declare
+v.Local.iTotalQty.Declare
+f.Intrinsic.Control.Try
+	v.Local.sPart.Set(v.Passed.000071)
+	v.Local.fPrice.Set(v.Passed.000163)
+	v.Local.sOrderNo.Set(v.Passed.000005)
+	f.Intrinsic.String.LPad(v.Local.sOrderNo, "0", 7, v.Local.sOrderNo)
+	'Get Total QTY.
+	f.ODBC.Connection!con.OpenCompanyConnection
+		f.Intrinsic.String.Build("Select sum(QTY_ORDERED) from V_Order_Lines where Order_No = '{0}'", v.Local.sOrderNo, v.Local.sSQL)
+		f.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSQL, v.Local.iTotalQty)
+		f.Intrinsic.String.Build("Select top 1 Customer from V_Order_Lines  where Order_No = '{0}'", v.Local.sOrderNo, v.Local.sSQL)
+		f.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSQL, v.Local.sCustomer)
+		f.Intrinsic.String.Build("Select * from GCG_5422_CONTRACT_P where Part = '{0}'and Customer = '{1}' and qty <= '{2}' order by Qty desc;", v.Local.sPart, v.Local.sCustomer, v.Local.iTotalQty, v.Local.sSQL)
+		f.Data.DataTable.CreateFromSQL("contractPriceDT", "con", v.Local.sSQL)
+	f.ODBC.Connection!con.Close
+	
+	f.Intrinsic.Control.If(v.DataTable.contractPriceDT.RowCount, >, 0)
+		v.Local.fPrice.Set(v.DataTable.contractPriceDT(0).ContractPrice!FieldVal)
+		v.Passed.000067.Set(v.Local.fPrice)
+	f.Intrinsic.Control.EndIf
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.UpdatePrice.End
