@@ -1,0 +1,756 @@
+Program.Sub.ScreenSU.Start
+Gui.F_ImportPrice..Create
+Gui.F_ImportPrice..Size(8580,11010)
+Gui.F_ImportPrice..MinX(8580)
+Gui.F_ImportPrice..MinY(12945)
+Gui.F_ImportPrice..Position(0,0)
+Gui.F_ImportPrice..BackColor(-2147483633)
+Gui.F_ImportPrice..MousePointer(0)
+Gui.F_ImportPrice..Caption("Contract Part Pricing")
+Gui.F_ImportPrice..MaxButton(False)
+Gui.F_ImportPrice..MinButton(False)
+Gui.F_ImportPrice..Event(UnLoad,F_ImportPrice_UnLoad)
+Gui.F_ImportPrice.frmFileUpload.Create(Frame)
+Gui.F_ImportPrice.frmFileUpload.Size(5715,735)
+Gui.F_ImportPrice.frmFileUpload.Position(75,75)
+Gui.F_ImportPrice.frmFileUpload.Caption("File Upload")
+Gui.F_ImportPrice.txtFileLocation.Create(TextBox,"",True,4170,300,0,75,270,True,0,"Arial",8,-2147483643,1)
+Gui.F_ImportPrice.txtFileLocation.Parent("frmFileUpload")
+Gui.F_ImportPrice.cmdFileBrowser.Create(Button)
+Gui.F_ImportPrice.cmdFileBrowser.Size(420,375)
+Gui.F_ImportPrice.cmdFileBrowser.Position(4305,225)
+Gui.F_ImportPrice.cmdFileBrowser.Parent("frmFileUpload")
+Gui.F_ImportPrice.cmdFileBrowser.Caption("^")
+Gui.F_ImportPrice.cmdFileBrowser.Event(Click,cmdFileBrowser_Click)
+Gui.F_ImportPrice.cmdUpload.Create(Button)
+Gui.F_ImportPrice.cmdUpload.Size(855,375)
+Gui.F_ImportPrice.cmdUpload.Position(4770,225)
+Gui.F_ImportPrice.cmdUpload.Parent("frmFileUpload")
+Gui.F_ImportPrice.cmdUpload.Caption("Upload")
+Gui.F_ImportPrice.cmdUpload.Event(Click,cmdUpload_Click)
+Gui.F_ImportPrice.frmSelection.Create(Frame)
+Gui.F_ImportPrice.frmSelection.Size(2460,735)
+Gui.F_ImportPrice.frmSelection.Position(5850,75)
+Gui.F_ImportPrice.frmSelection.Caption("Selection")
+Gui.F_ImportPrice.frmSelection.Anchor(9)
+Gui.F_ImportPrice.cboAccounts.Create(ComboBox)
+Gui.F_ImportPrice.cboAccounts.Size(1845,330)
+Gui.F_ImportPrice.cboAccounts.Position(60,255)
+Gui.F_ImportPrice.cboAccounts.Parent("frmSelection")
+Gui.F_ImportPrice.cmdRefresh.Create(Button)
+Gui.F_ImportPrice.cmdRefresh.Size(420,375)
+Gui.F_ImportPrice.cmdRefresh.Position(1965,225)
+Gui.F_ImportPrice.cmdRefresh.Caption("Refresh")
+Gui.F_ImportPrice.cmdRefresh.Parent("frmSelection")
+Gui.F_ImportPrice.cmdRefresh.Event(Click,cmdRefresh_Click)
+Gui.F_ImportPrice.cmdSave.Create(Button)
+Gui.F_ImportPrice.cmdSave.Size(960,375)
+Gui.F_ImportPrice.cmdSave.Position(7290,9975)
+Gui.F_ImportPrice.cmdSave.Caption("Save")
+Gui.F_ImportPrice.cmdSave.Anchor(10)
+Gui.F_ImportPrice.cmdSave.Event(Click,cmdSave_Click)
+Gui.F_ImportPrice.frmGSGC.Create(Frame)
+Gui.F_ImportPrice.frmGSGC.Size(8220,8100)
+Gui.F_ImportPrice.frmGSGC.Position(75,1845)
+Gui.F_ImportPrice.frmGSGC.Anchor(14)
+Gui.F_ImportPrice.GsGcContractPrice.Create(GsGridControl)
+Gui.F_ImportPrice.GsGcContractPrice.Size(8070,7770)
+Gui.F_ImportPrice.GsGcContractPrice.Position(75,180)
+Gui.F_ImportPrice.GsGcContractPrice.Parent("frmGSGC")
+Gui.F_ImportPrice.GsGcContractPrice.Anchor(14)
+Gui.F_ImportPrice.frmPercentage.Create(Frame)
+Gui.F_ImportPrice.frmPercentage.Size(5985,960)
+Gui.F_ImportPrice.frmPercentage.Position(75,840)
+Gui.F_ImportPrice.frmPercentage.Caption("Percentage Change")
+Gui.F_ImportPrice.lbl3.Create(Label,"Price Change",True,1080,255,0,105,615,True,0,"Arial",8,-2147483633,0)
+Gui.F_ImportPrice.lbl3.Parent("frmPercentage")
+Gui.F_ImportPrice.cmdSign.Create(Button)
+Gui.F_ImportPrice.cmdSign.Size(360,375)
+Gui.F_ImportPrice.cmdSign.Position(1245,510)
+Gui.F_ImportPrice.cmdSign.Parent("frmPercentage")
+Gui.F_ImportPrice.cmdSign.Caption("+")
+Gui.F_ImportPrice.cmdSign.FontStyle(True,False,False,False,False)
+Gui.F_ImportPrice.cmdSign.Event(Click,cmdSign_Click)
+Gui.F_ImportPrice.cmdSign.Enabled(False)
+Gui.F_ImportPrice.cmdSign.Visible(False)
+Gui.F_ImportPrice.txtPercentage.Create(TextBox,"",True,855,300,0,1650,555,True,0,"Arial",8,-2147483643,1)
+Gui.F_ImportPrice.txtPercentage.Parent("frmPercentage")
+Gui.F_ImportPrice.cmdPercentageUpdate.Create(Button)
+Gui.F_ImportPrice.cmdPercentageUpdate.Size(855,375)
+Gui.F_ImportPrice.cmdPercentageUpdate.Position(2580,510)
+Gui.F_ImportPrice.cmdPercentageUpdate.Parent("frmPercentage")
+Gui.F_ImportPrice.cmdPercentageUpdate.Caption("Load")
+Gui.F_ImportPrice.cmdPercentageUpdate.Event(Click,cmdPercentageUpdate_Click)
+Gui.F_ImportPrice.Qty0.Create(CheckBox)
+Gui.F_ImportPrice.Qty0.Size(885,270)
+Gui.F_ImportPrice.Qty0.Position(150,210)
+Gui.F_ImportPrice.Qty0.Parent("frmPercentage")
+Gui.F_ImportPrice.Qty0.Caption("1000")
+Gui.F_ImportPrice.Qty0.Visible(False)
+Gui.F_ImportPrice.Qty1.Create(CheckBox)
+Gui.F_ImportPrice.Qty1.Size(885,270)
+Gui.F_ImportPrice.Qty1.Position(1095,210)
+Gui.F_ImportPrice.Qty1.Parent("frmPercentage")
+Gui.F_ImportPrice.Qty1.Caption("1000")
+Gui.F_ImportPrice.Qty1.Visible(False)
+Gui.F_ImportPrice.Qty2.Create(CheckBox)
+Gui.F_ImportPrice.Qty2.Size(885,270)
+Gui.F_ImportPrice.Qty2.Position(2010,210)
+Gui.F_ImportPrice.Qty2.Parent("frmPercentage")
+Gui.F_ImportPrice.Qty2.Caption("1000")
+Gui.F_ImportPrice.Qty2.Visible(False)
+Gui.F_ImportPrice.Qty3.Create(CheckBox)
+Gui.F_ImportPrice.Qty3.Size(885,270)
+Gui.F_ImportPrice.Qty3.Position(2925,210)
+Gui.F_ImportPrice.Qty3.Parent("frmPercentage")
+Gui.F_ImportPrice.Qty3.Caption("1000")
+Gui.F_ImportPrice.Qty3.Visible(False)
+Gui.F_ImportPrice.Qty4.Create(CheckBox)
+Gui.F_ImportPrice.Qty4.Size(885,270)
+Gui.F_ImportPrice.Qty4.Position(3915,210)
+Gui.F_ImportPrice.Qty4.Parent("frmPercentage")
+Gui.F_ImportPrice.Qty4.Caption("1000")
+Gui.F_ImportPrice.Qty4.Visible(False)
+Gui.F_ImportPrice.Qty5.Create(CheckBox)
+Gui.F_ImportPrice.Qty5.Visible(False)
+Gui.F_ImportPrice.Qty5.Size(885,270)
+Gui.F_ImportPrice.Qty5.Position(4860,210)
+Gui.F_ImportPrice.Qty5.Parent("frmPercentage")
+Gui.F_ImportPrice.Qty5.Caption("1000")
+Gui.F_ImportPrice.cmdSaveAll.Create(Button)
+Gui.F_ImportPrice.cmdSaveAll.Size(855,375)
+Gui.F_ImportPrice.cmdSaveAll.Position(7395,1440)
+Gui.F_ImportPrice.cmdSaveAll.Caption("Save All")
+Gui.F_ImportPrice.cmdSaveAll.Event(Click,cmdSaveAll_Click)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+v.Global.sDatatableNames.Declare
+v.Global.sGridViewNames.Declare
+v.Global.sCustomerNumber.Declare
+v.Global.iLastCnt.Declare
+v.Global.iLastCnt.Set(0)
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+f.Intrinsic.Control.Try
+	f.Intrinsic.Control.CallSub(createDictionary)
+	f.Intrinsic.Control.CallSub(SetContextMenus)
+	gui.F_ImportPrice..Show
+
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.Main.End
+
+Program.Sub.ErrorMsg.Start
+v.Local.sError.Declare
+
+'Closes ODBC connection, default to connection : "con"
+f.Intrinsic.Control.If(v.ODBC!con.State, =, 1)
+	f.ODBC.Connection!con.Close
+f.Intrinsic.Control.EndIf
+
+'Generic Error message.
+f.Intrinsic.String.Build("Project GCG_5422_Price_Upload.g2u {0}{0}Subroutine: {1}{0}Error: {2} with Description: {3}", v.Ambient.NewLine, v.Args.CurrentSub, v.Ambient.ErrorNumber, v.Ambient.ErrorDescription, v.Local.sError)
+f.Intrinsic.UI.Msgbox(v.Local.sError)
+Program.Sub.ErrorMsg.End
+
+Program.Sub.loadIcon.Start
+f.Intrinsic.Control.Try
+	v.Local.sIcon.Declare
+	'sets the icon
+	f.Intrinsic.String.Build("{0}\ART\gss2.ico", v.Caller.GlobalDir, v.Local.sIcon)
+	gui.F_ImportPrice..Icon(v.Local.sIcon)
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.loadIcon.End
+
+Program.Sub.F_ImportPrice_UnLoad.Start
+f.Intrinsic.Control.Try
+	'Closes ODBC connection, default to connection : "con"
+	f.Intrinsic.Control.If(v.ODBC!con.State, =, 1)
+		f.ODBC.Connection!con.Close
+	f.Intrinsic.Control.EndIf
+	
+	f.Intrinsic.Control.End
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.F_ImportPrice_UnLoad.End
+
+Program.Sub.cmdFileBrowser_Click.Start
+v.Local.sRet.Declare
+f.Intrinsic.Control.Try
+	'File Browser
+	f.Intrinsic.UI.ShowOpenFileDialog("", "", "", v.Local.sRet)
+	f.Intrinsic.Control.If(v.Local.sRet, !=, "***CANCEL***")
+		gui.F_ImportPrice.txtFileLocation.Text(v.Local.sRet)
+	f.Intrinsic.Control.EndIf	
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.cmdFileBrowser_Click.End
+
+Program.Sub.cmdUpload_Click.Start
+f.Intrinsic.Control.Try
+	f.Intrinsic.Control.If(v.Screen.F_ImportPrice!txtFileLocation.Text, !=, "")
+		f.Intrinsic.UI.InvokeWaitDialog("Loading.")
+			f.Intrinsic.Control.CallSub(createDatatablesFromUpload)
+		f.Intrinsic.UI.CloseWaitDialog
+	f.Intrinsic.Control.EndIf
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.cmdUpload_Click.End
+
+Program.Sub.cmdRefresh_Click.Start
+f.Intrinsic.Control.Try
+	f.Intrinsic.Control.CallSub(RefreshGrid)
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.cmdRefresh_Click.End
+
+Program.Sub.cmdSign_Click.Start
+f.Intrinsic.Control.Try
+	f.Intrinsic.Control.If(v.Screen.F_ImportPrice!cmdSign.Caption, =, "+")
+		gui.F_ImportPrice.cmdSign.Caption("-")
+	f.Intrinsic.Control.ElseIf(v.Screen.F_ImportPrice!cmdSign.Caption, =, "-")
+		gui.F_ImportPrice.cmdSign.Caption("+")
+	f.Intrinsic.Control.EndIf
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.cmdSign_Click.End
+
+Program.Sub.cmdPercentageUpdate_Click.Start
+v.Local.iCnt.Declare
+v.Local.iQtyCnt.Declare
+v.Local.sDT.Declare
+v.local.sFilter.Declare
+v.Local.fPercent.Declare
+v.Local.fPrice.Declare
+v.Local.sQtyTemp.Declare
+
+f.Intrinsic.Control.Try
+	f.Intrinsic.String.Build("customerNumber = '{0}'", v.Screen.F_ImportPrice!cboAccounts.Value, v.Local.sFilter)
+	f.Data.DataView.Create("dataTablesAcc", "selectedDV", 22, v.Local.sFilter, "")
+	f.Intrinsic.Control.If(v.DataView.dataTablesAcc!selectedDV.RowCount, =, 1)
+		v.Local.sDT.Set(v.DataView.dataTablesAcc!selectedDV(0).dataTableName!FieldValTrim)
+		f.Intrinsic.Control.If(v.Screen.F_ImportPrice!txtPercentage.Text, !=, "")
+			v.Local.fPercent.Set(v.Screen.F_ImportPrice!txtPercentage.Text)
+'			f.Intrinsic.Control.If(v.Screen.F_ImportPrice!cmdSign.Caption, = , "-")
+'				f.Intrinsic.Math.Sub(100, v.Screen.F_ImportPrice!txtPercentage.Text, v.Local.fPercent)
+'				f.Intrinsic.Math.Div(v.Local.fPercent, 100, v.Local.fPercent)
+'			f.Intrinsic.Control.ElseIf(v.Screen.F_ImportPrice!cmdSign.Caption, = , "+")
+'				f.Intrinsic.Math.Add(100, v.Screen.F_ImportPrice!txtPercentage.Text, v.Local.fPercent)
+'				f.Intrinsic.Math.Div(v.Local.fPercent, 100, v.Local.fPercent)
+'			f.Intrinsic.Control.EndIf			
+			
+			f.Intrinsic.Control.For(v.Local.iQtyCnt, 0, 5, 1)
+				f.Intrinsic.String.Build("Qty{0}", v.Local.iQtyCnt, v.Local.sQtyTemp)
+				f.Intrinsic.Control.If(v.Screen.F_ImportPrice![v.Local.sQtyTemp].Value, =, 1)
+					
+					f.Intrinsic.Control.For(v.Local.iCnt, 0, v.DataTable.[v.Local.sDT].RowCount--, 1)
+						v.Local.fPrice.Set(v.DataTable.[v.Local.sDT](v.Local.iCnt).[v.Local.sQtyTemp]!FieldVal)
+						f.Intrinsic.Control.If(v.Local.fPrice, >, 0)
+							'f.Data.DataTable.SetValue(v.Local.sDT, v.Local.iCnt, "Percentage", v.Local.fPercent)
+							'add tool tip using line Above
+							f.Intrinsic.Math.Mult(v.Local.fPercent, v.Local.fPrice, v.Local.fPrice)
+							f.Data.DataTable.SetValue(v.Local.sDT, v.Local.iCnt, v.Local.sQtyTemp, v.Local.fPrice)
+						f.Intrinsic.Control.EndIf						
+					f.Intrinsic.Control.Next(v.Local.iCnt)					
+				f.Intrinsic.Control.EndIf
+				
+				f.Data.DataTable.SetValueFormat(v.Local.sDT, -1, v.Local.sQtyTemp, v.Local.sQtyTemp, "##.00")
+				
+			f.Intrinsic.Control.Next(v.Local.iQtyCnt)			
+		f.Intrinsic.Control.EndIf
+	f.Intrinsic.Control.EndIf	
+	f.Data.DataView.Close("dataTablesAcc", "selectedDV")
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.cmdPercentageUpdate_Click.End
+
+Program.Sub.cmdSave_Click.Start
+f.Intrinsic.Control.Try
+
+	f.Intrinsic.Control.CallSub(addDataFromImport)
+	f.Intrinsic.UI.Msgbox("Upload Complete")
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.cmdSave_Click.End
+
+Program.Sub.createDictionary.Start
+v.Local.sSQL.Declare
+f.Intrinsic.Control.Try
+	f.ODBC.Connection!con.OpenCompanyConnection
+		f.Data.Dictionary.CreateFromSQL("customerDictionary", "con", "select customer, name_customer from V_CUSTOMER_MASTER")
+		f.Data.Dictionary.CreateFromSQL("productLineDictionary", "con", "select part, product_line from V_INVENTORY_MSTR")
+		'f.Data.Dictionary.CreateFromSQL("pricetLineDictionary", "con", "select part, price from V_INVENTORY_MSTR")
+	f.ODBC.Connection!con.Close
+	
+	f.Data.DataTable.Create("dataTablesAcc", true)
+	f.Data.DataTable.AddColumn("dataTablesAcc", "dataTableName", "string")
+	f.Data.DataTable.AddColumn("dataTablesAcc", "customerNumber", "string")
+	
+	f.Data.DataTable.Create("qtyDatatable", true)
+	f.Data.DataTable.AddColumn("qtyDatatable", "customerNumber", "string")
+	f.Data.DataTable.AddColumn("qtyDatatable", "qty", "string")
+	f.Data.DataTable.AddColumn("qtyDatatable", "title", "string")
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.createDictionary.End
+
+Program.Sub.createDatatablesFromUpload.Start
+v.Local.sUploadTotal.Declare
+v.Local.sSpreadsheets.Declare
+v.Local.sFieldNames.Declare
+v.Local.sFieldTypes.Declare
+v.Local.sTemp.Declare
+v.Local.sQtyTemp.Declare
+v.Local.iQtyCnt.Declare
+v.Local.iCnt.Declare
+v.Local.bLastRow.Declare
+v.Local.iRet.Declare
+v.Local.iUbound.Declare
+
+f.Intrinsic.Control.Try
+	f.Automation.MSExcel.ReadSpreadsheet(v.Screen.F_ImportPrice!txtFileLocation.Text, v.Local.sUploadTotal)
+	f.Intrinsic.String.Split(v.Local.sUploadTotal, "&^&", v.Local.sSpreadsheets)
+	
+	f.Intrinsic.Math.Add(v.Local.sSpreadsheets.UBound, v.Global.iLastCnt, v.Local.iUbound)
+	v.Global.sDatatableNames.Redim(0, v.Local.iUbound)
+	v.Global.sCustomerNumber.Redim(0, v.Local.iUbound)
+	v.Global.sGridViewNames.Redim(0, v.Local.iUbound)
+	'Xcel Read!!!!
+	v.Local.sFieldNames.Set("Part*!*Description*!*Percentage*!*Qty0*!*Qty1*!*Qty2*!*Qty3*!*Qty4*!*Qty5")
+	v.Local.sFieldTypes.Set("String*!*String*!*String*!*String*!*String*!*String*!*String*!*String*!*String")
+	
+	f.Intrinsic.Control.For(v.Local.iCnt, 0, v.Local.sSpreadsheets.UBound, 1)
+		v.Local.bLastRow.Set(false)
+		f.Intrinsic.String.Build("dt{0}", v.Global.iLastCnt, v.Global.sDatatableNames(v.Local.iCnt))
+		f.Intrinsic.String.Build("gv{0}", v.Global.iLastCnt, v.Global.sGridViewNames(v.Local.iCnt))
+		f.Intrinsic.Math.Add(v.Global.iLastCnt, 1, v.Global.iLastCnt)
+		
+		f.Data.DataTable.CreateFromString(v.Global.sDatatableNames(v.Local.iCnt), v.Local.sSpreadsheets(v.Local.iCnt), v.Local.sFieldNames, v.Local.sFieldTypes, "*!*", "$!$", true)
+		v.Global.sCustomerNumber(v.Local.iCnt).Set(v.DataTable.[v.Global.sDatatableNames(v.Local.iCnt)](0).Part!FieldValTrim)
+		f.Data.DataTable.RemoveColumn(v.Global.sDatatableNames(v.Local.iCnt), "Percentage")
+		f.Data.DataTable.AddColumn(v.Global.sDatatableNames(v.Local.iCnt), "Customer", "String", v.Global.sCustomerNumber(v.Local.iCnt))
+		f.Data.DataTable.AddColumn(v.Global.sDatatableNames(v.Local.iCnt), "PL", "String", "")
+		
+		f.Data.DataTable.AddRow("dataTablesAcc", "dataTableName", v.Global.sDatatableNames(v.Local.iCnt), "customerNumber", v.Global.sCustomerNumber(v.Local.iCnt))
+
+		f.Intrinsic.Control.For(v.Local.iQtyCnt, 0, 5, 1)
+			f.Intrinsic.String.Build("Qty{0}", v.Local.iQtyCnt, v.Local.sQtyTemp)
+			v.Local.sTemp.Set(v.DataTable.[v.Global.sDatatableNames(v.Local.iCnt)](0).[v.Local.sQtyTemp]!FieldValTrim)
+			f.Intrinsic.Control.If(v.Local.sTemp, !=, "")
+				f.Data.DataTable.AddRow("qtyDatatable", "customerNumber", v.Global.sCustomerNumber(v.Local.iCnt), "qty", v.Local.sTemp, "title", v.Local.sQtyTemp)
+			f.Intrinsic.Control.Else
+				f.Intrinsic.Control.If(v.Local.sQtyTemp, =, "Qty0")
+					f.Data.DataTable.AddRow("qtyDatatable", "customerNumber", v.Global.sCustomerNumber(v.Local.iCnt), "qty", v.Local.sTemp, "title", v.Local.sQtyTemp)
+				f.Intrinsic.Control.EndIf
+			f.Intrinsic.Control.EndIf
+		f.Intrinsic.Control.Next(v.Local.iQtyCnt)
+		
+		f.Data.DataTable.DeleteRow(v.Global.sDatatableNames(v.Local.iCnt), 0)
+		
+		gui.F_ImportPrice.GsGcContractPrice.AddGridviewFromDatatable(v.Global.sGridViewNames(v.Local.iCnt), v.Global.sDatatableNames(v.Local.iCnt))
+		
+		f.Intrinsic.Control.CallSub(setGridViewProperties, passedDT, v.Global.sDatatableNames(v.Local.iCnt), passedGV, v.Global.sGridViewNames(v.Local.iCnt), passedCN, v.Global.sCustomerNumber(v.Local.iCnt))
+		f.Intrinsic.Control.DoUntil(v.Local.bLastRow)
+			v.Local.iRet.Set(v.DataTable.[v.Global.sDatatableNames(v.Local.iCnt)].RowCount--)			
+			f.Intrinsic.Control.If(v.DataTable.[v.Global.sDatatableNames(v.Local.iCnt)](v.Local.iRet).Part!FieldValTrim, =, "")
+				f.Data.DataTable.DeleteRow(v.Global.sDatatableNames(v.Local.iCnt), v.Local.iRet)
+			f.Intrinsic.Control.Else
+				v.Local.bLastRow.Set(true)
+			f.Intrinsic.Control.EndIf			
+		f.Intrinsic.Control.Loop
+		f.Data.DataTable.FillFromDictionary(v.Global.sDatatableNames(v.Local.iCnt), "customerDictionary", "Customer", "Customer")
+		f.Data.DataTable.FillFromDictionary(v.Global.sDatatableNames(v.Local.iCnt), "productLineDictionary", "Part", "PL")
+		gui.F_ImportPrice.cboAccounts.AddItem(v.Global.sCustomerNumber(v.Local.iCnt))
+	f.Intrinsic.Control.Next(v.Local.iCnt)
+	gui.F_ImportPrice.cboAccounts.ListIndex(0)
+	f.Intrinsic.Control.CallSub(RefreshGrid)
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.createDatatablesFromUpload.End
+
+Program.Sub.setGridViewProperties.Start
+v.Local.sDtFieldName.Declare
+v.Local.iCnt.Declare
+v.Local.sFilter.Declare
+v.Local.sTemp.Declare
+v.Local.iColIndex.Declare
+v.Local.sQtyTemp.Declare
+
+gui.F_ImportPrice.GsGcContractPrice.SuspendLayout
+f.Intrinsic.Control.Try
+	f.Intrinsic.String.Split(v.DataTable.[v.Args.passedDT].FieldNames, "*!*", v.Local.sDtFieldName)
+	f.Intrinsic.Control.For(v.Local.iCnt, 0, v.Local.sDtFieldName.UBound, 1)
+		'HeaderFontBold
+		gui.F_ImportPrice.GsGcContractPrice.SetColumnProperty(v.Args.passedGV, v.Local.sDtFieldName(v.Local.iCnt), "HeaderFontBold", True)
+		'HeaderBackColor
+		gui.F_ImportPrice.GsGcContractPrice.SetColumnProperty(v.Args.passedGV, v.Local.sDtFieldName(v.Local.iCnt), "HeaderBackColor", v.Color.LtGray)
+		'ReadOnly
+		gui.F_ImportPrice.GsGcContractPrice.SetColumnProperty(v.Args.passedGV, v.Local.sDtFieldName(v.Local.iCnt), "ReadOnly", True)
+		'AllowEdit
+		gui.F_ImportPrice.GsGcContractPrice.SetColumnProperty(v.Args.passedGV, v.Local.sDtFieldName(v.Local.iCnt), "AllowEdit", False)
+		'HeaderHAlignment
+		gui.F_ImportPrice.GsGcContractPrice.SetColumnProperty(v.Args.passedGV, v.Local.sDtFieldName(v.Local.iCnt), "HeaderHAlignment", "Center")
+		'CellHAlignment
+		gui.F_ImportPrice.GsGcContractPrice.SetColumnProperty(v.Args.passedGV, v.Local.sDtFieldName(v.Local.iCnt), "CellHAlignment", "Center")
+		'Visible
+		gui.F_ImportPrice.GsGcContractPrice.SetColumnProperty(v.Args.passedGV, v.Local.sDtFieldName(v.Local.iCnt), "Visible", false)
+	f.Intrinsic.Control.Next(v.Local.iCnt)
+
+	gui.F_ImportPrice.GsGcContractPrice.SetColumnProperty(v.Args.passedGV, "Part", "Caption", "Part")
+	gui.F_ImportPrice.GsGcContractPrice.SetColumnProperty(v.Args.passedGV,"Description", "Caption", "Description")
+	'gui.F_ImportPrice.GsGcContractPrice.SetColumnProperty(v.Args.passedGV, "Price", "Caption", "Price")
+	gui.F_ImportPrice.GsGcContractPrice.SetColumnProperty(v.Args.passedGV, "Customer", "Caption", "Customer")
+	gui.F_ImportPrice.GsGcContractPrice.SetColumnProperty(v.Args.passedGV, "PL", "Caption", "PL")
+
+	gui.F_ImportPrice.GsGcContractPrice.SetColumnProperty(v.Args.passedGV, "Customer", "VisibleIndex", 0)
+	gui.F_ImportPrice.GsGcContractPrice.SetColumnProperty(v.Args.passedGV, "Part", "VisibleIndex", 1)
+	gui.F_ImportPrice.GsGcContractPrice.SetColumnProperty(v.Args.passedGV, "PL", "VisibleIndex", 2)
+	gui.F_ImportPrice.GsGcContractPrice.SetColumnProperty(v.Args.passedGV,"Description", "VisibleIndex", 3)
+	'gui.F_ImportPrice.GsGcContractPrice.SetColumnProperty(v.Args.passedGV, "Price", "VisibleIndex", 4)
+	
+	gui.F_ImportPrice.GsGcContractPrice.SetColumnProperty(v.Args.passedGV, "Customer", "Fixed", Left)
+	gui.F_ImportPrice.GsGcContractPrice.SetColumnProperty(v.Args.passedGV, "Part", "Fixed", Left)
+	gui.F_ImportPrice.GsGcContractPrice.SetColumnProperty(v.Args.passedGV, "PL", "Fixed", Left)
+	gui.F_ImportPrice.GsGcContractPrice.SetColumnProperty(v.Args.passedGV,"Description", "Fixed", Left)
+	'gui.F_ImportPrice.GsGcContractPrice.SetColumnProperty(v.Args.passedGV, "Price", "Fixed", Left)
+
+	f.Intrinsic.String.Build("customerNumber = '{0}'", v.Args.passedCN, v.Local.sFilter)
+	f.Data.DataView.Create("qtyDatatable", "selectedDV", 22, v.Local.sFilter, "")
+		f.Intrinsic.Control.If(v.DataView.qtyDatatable!selectedDV.RowCount, >, 0)
+			f.Intrinsic.Control.For(v.Local.iCnt, 0, v.DataView.qtyDatatable!selectedDV.RowCount--, 1)
+				f.Intrinsic.Math.Add(v.Local.iCnt, 4, v.Local.iColIndex)
+				v.Local.sTemp.Set(v.DataView.qtyDatatable!selectedDV(v.Local.iCnt).Qty!FieldValTrim)
+				v.Local.sQtyTemp.Set(v.DataView.qtyDatatable!selectedDV(v.Local.iCnt).Title!FieldValTrim)
+				gui.F_ImportPrice.GsGcContractPrice.SetColumnProperty(v.Args.passedGV, v.Local.sQtyTemp, "VisibleIndex", v.Local.iColIndex)
+				gui.F_ImportPrice.GsGcContractPrice.SetColumnProperty(v.Args.passedGV, v.Local.sQtyTemp, "Caption", v.Local.sTemp)
+				gui.F_ImportPrice.GsGcContractPrice.SetColumnProperty(v.Args.passedGV, v.Local.sQtyTemp, "ReadOnly", False)
+				gui.F_ImportPrice.GsGcContractPrice.SetColumnProperty(v.Args.passedGV, v.Local.sQtyTemp, "AllowEdit", True)
+			f.Intrinsic.Control.Next(v.Local.iCnt)	
+		f.Intrinsic.Control.EndIf		
+	f.Data.DataView.Close("qtyDatatable", "selectedDV")	
+	
+	gui.F_ImportPrice.GsGcContractPrice.BestFitColumns(v.Args.passedGV)
+	gui.F_ImportPrice.GsGcContractPrice.SetGridviewProperty(v.Args.passedGV, "OptionsViewColumnAutoWidth", false)
+	gui.F_ImportPrice.GsGcContractPrice.ResumeLayout
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.setGridViewProperties.End
+
+Program.Sub.RefreshGrid.Start
+v.Local.sFilter.Declare
+v.Local.sDT.Declare
+v.Local.sGV.Declare
+v.Local.sTemp.Declare
+v.Local.iCnt.Declare
+v.Local.iQtyCnt.Declare
+v.Local.iLenght.Declare
+v.Local.sQtyTemp.Declare
+f.Intrinsic.Control.Try
+	gui.F_ImportPrice.frmPercentage.Visible(False)
+	gui.F_ImportPrice.frmGSGC.Visible(False)
+	f.Intrinsic.String.Build("customerNumber = '{0}'", v.Screen.F_ImportPrice!cboAccounts.Value, v.Local.sFilter)
+	f.Data.DataView.Create("dataTablesAcc", "selectedDV", 22, v.Local.sFilter, "")
+	f.Intrinsic.Control.If(v.DataView.dataTablesAcc!selectedDV.RowCount, =, 1)
+		v.Local.sDT.Set(v.DataView.dataTablesAcc!selectedDV(0).dataTableName!FieldValTrim)
+		f.Intrinsic.Math.Sub(v.Local.sDT.Length, 2, v.Local.iLenght)
+		f.Intrinsic.String.Right(v.Local.sDT, v.Local.iLenght, v.Local.sTemp)
+		f.Intrinsic.String.Build("gv{0}", v.Local.sTemp, v.Local.sGV)
+		gui.F_ImportPrice.GsGcContractPrice.MainView(v.Local.sGV)
+	f.Intrinsic.Control.EndIf
+	f.Data.DataView.Close("dataTablesAcc", "selectedDV")
+	
+	f.Intrinsic.Control.For(v.Local.iQtyCnt, 1, 5, 1)
+		f.Intrinsic.String.Build("Qty{0}", v.Local.iQtyCnt, v.Local.sQtyTemp)
+		gui.F_ImportPrice.[v.Local.sQtyTemp].Visible(False)
+	f.Intrinsic.Control.Next(v.Local.iQtyCnt)
+	
+	f.Data.DataView.Create("qtyDatatable", "selectedDV", 22, v.Local.sFilter, "")
+		f.Intrinsic.Control.If(v.DataView.qtyDatatable!selectedDV.RowCount, >, 0)
+			f.Intrinsic.Control.For(v.Local.iCnt, 0, v.DataView.qtyDatatable!selectedDV.RowCount--, 1)
+				v.Local.sTemp.Set(v.DataView.qtyDatatable!selectedDV(v.Local.iCnt).Qty!FieldValTrim)
+				v.Local.sQtyTemp.Set(v.DataView.qtyDatatable!selectedDV(v.Local.iCnt).Title!FieldValTrim)
+				gui.F_ImportPrice.[v.Local.sQtyTemp].Visible(True)
+				gui.F_ImportPrice.[v.Local.sQtyTemp].Caption(v.Local.sTemp)
+				f.Intrinsic.Control.If(v.Local.sTemp, !=, "")
+					gui.F_ImportPrice.[v.Local.sQtyTemp].Visible(True)
+				f.Intrinsic.Control.EndIf
+			f.Intrinsic.Control.Next(v.Local.iCnt)	
+		f.Intrinsic.Control.EndIf		
+	f.Data.DataView.Close("qtyDatatable", "selectedDV")		
+	
+	gui.F_ImportPrice.frmPercentage.Visible(True)
+	gui.F_ImportPrice.frmGSGC.Visible(True)	
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.RefreshGrid.End
+
+Program.Sub.SetContextMenus.Start
+v.Local.bEditSO.Declare	
+v.Local.bEditWO.Declare
+f.Intrinsic.Control.Try
+	Gui.F_ImportPrice..ContextMenuCreate("ctxAll")
+	Gui.F_ImportPrice.GsGcContractPrice.ContextMenuAttach("ctxAll")
+	Gui.F_ImportPrice..ContextMenuAddItem("ctxAll","Refresh",0,"Refresh")		
+	Gui.F_ImportPrice..ContextMenuAddItem("ctxAll","ResetColumns",0,"Reset Columns")
+	Gui.F_ImportPrice..ContextMenuSetItemEventHandler("ctxAll","Refresh","MenuClickRefresh")
+	Gui.F_ImportPrice..ContextMenuSetItemEventHandler("ctxAll","ResetColumns","MenuClickResetColumns")
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.SetContextMenus.End
+
+Program.Sub.MenuClickRefresh.Start
+f.Intrinsic.Control.Try
+	f.Intrinsic.Control.CallSub(RefreshGrid)
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.MenuClickRefresh.End
+
+Program.Sub.MenuClickResetColumns.Start
+f.Intrinsic.Control.Try
+	f.Intrinsic.Control.SelectCase(V.Args.MenuName)
+		f.Intrinsic.Control.Case("CTXALL")
+			f.Global.Registry.AddValue(V.Caller.User,V.Caller.CompanyCode,"allOrdersDV",5343,1000,False,"Serialize",False,0,-999.0,1/1/1980,12:00:00 AM,"")
+	f.Intrinsic.Control.EndSelect
+	v.Global.bLoadData.Set(False)
+	f.Intrinsic.Control.CallSub(cmdRefresh_Click)
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.MenuClickResetColumns.End
+
+Program.Sub.CreateImportDT.Start
+f.Intrinsic.Control.Try
+'	f.Data.DataTable.Create("gcg_5422_DT", true)
+'	f.Data.DataTable.AddColumn("gcg_5422_DT", "Part", "String")
+'	f.Data.DataTable.AddColumn("gcg_5422_DT", "Description", "String")
+'	f.Data.DataTable.AddColumn("gcg_5422_DT", "PL", "String")
+'	f.Data.DataTable.AddColumn("gcg_5422_DT", "Customer", "String")
+'	f.Data.DataTable.AddColumn("gcg_5422_DT", "CustomerName", "String")
+'	f.Data.DataTable.AddColumn("gcg_5422_DT", "QTY", "Long")
+'	f.Data.DataTable.AddColumn("gcg_5422_DT", "Price", "Float")
+'	f.Data.DataTable.AddColumn("gcg_5422_DT", "ContractPrice", "Float")
+'	f.Data.DataTable.AddColumn("gcg_5422_DT", "Percentage", "Float")
+f.ODBC.Connection!con.OpenCompanyConnection
+ 	f.Data.DataTable.CreateFromSQL("gcg_5422_DT", "con", "select * from GCG_5422_CONTRACT_P where Part = '-1'", True)
+f.ODBC.Connection!con.Close
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.CreateImportDT.End
+
+Program.Sub.addDataFromImport.Start
+v.Local.iCnt.Declare
+v.Local.sFilter.Declare
+v.Local.sDataTable.Declare
+v.Local.sCustomer.Declare
+v.Local.sCustomerName.Declare
+v.Local.sPart.Declare
+v.Local.sDescription.Declare
+v.Local.sPL.Declare
+v.Local.fPrice.Declare
+v.Local.fQty.Declare
+v.Local.fContractPrice.Declare
+v.Local.fPercentage.Declare
+v.Local.sSQL.Declare
+f.Intrinsic.Control.Try
+
+	f.Intrinsic.Control.CallSub(CreateImportDT)
+	
+	v.Local.sCustomer.Set(v.Screen.F_ImportPrice!cboAccounts.Value)
+	f.Intrinsic.String.Build("customerNumber = '{0}'", v.Local.sCustomer, v.Local.sFilter)
+	f.Data.DataView.Create("dataTablesAcc", "dtName", 22, v.Local.sFilter, "")
+	f.Intrinsic.Control.If(v.DataView.dataTablesAcc!dtName.RowCount, =, 1)
+		v.Local.sDataTable.Set(v.DataView.dataTablesAcc!dtName(0).dataTableName!FieldValTrim)
+		f.Intrinsic.Control.For(v.Local.iCnt, 0, v.DataTable.[v.Local.sDataTable].RowCount--, 1)
+			v.Local.sCustomerName.Set(v.DataTable.[v.Local.sDataTable](v.Local.iCnt).Customer!FieldValTrim)
+			v.Local.sPart.Set(v.DataTable.[v.Local.sDataTable](v.Local.iCnt).Part!FieldValTrim)
+			v.Local.sDescription.Set(v.DataTable.[v.Local.sDataTable](v.Local.iCnt).Description!FieldValTrim)
+			v.Local.sPL.Set(v.DataTable.[v.Local.sDataTable](v.Local.iCnt).PL!FieldValTrim)
+			
+			f.Intrinsic.String.Trim(v.Local.sPart, v.Local.sPart)
+			f.Intrinsic.Control.If(v.Local.sPart, <>, "")			
+				
+				f.Intrinsic.String.RPad(v.Local.sPart, " ", 17, v.Local.sPart)
+				f.Intrinsic.String.Trim(v.Local.sPL, v.Local.sPL)
+				f.Intrinsic.String.RPad(v.Local.sPL, " ", 17, v.Local.sPL)
+				
+				f.ODBC.Connection!con.OpenCompanyConnection
+					f.Intrinsic.String.Build("select product_line from V_INVENTORY_MSTR where part = '{0}'", v.Local.sPart, v.Local.sSQL)
+					f.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSQL, v.Local.sPL)
+					
+					f.Intrinsic.String.Build("select name_customer from V_CUSTOMER_MASTER where customer = '{0}'", v.Local.sCustomer, v.Local.sSQL)
+					f.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSQL, v.Local.sCustomerName)
+				f.ODBC.Connection!con.Close
+				'v.Local.fPrice.Set(v.DataTable.[v.Local.sDataTable](v.Local.iCnt).Price!FieldVal)
+				'v.Local.fPrice.Set(0.0)
+				
+				'Cut Descriptions
+				'f.Intrinsic.String.Left(v.Local.sPL, 2, v.Local.sPL)
+				f.Intrinsic.String.Left(v.Local.sDescription, 30, v.Local.sDescription)
+				f.Intrinsic.String.Left(v.Local.sCustomerName, 30, v.Local.sCustomerName)
+				'f.Intrinsic.String.Left(v.Local.sCustomer, 6, v.Local.sCustomer)
+				
+				f.Intrinsic.Math.Round(v.Local.fPrice, 4, v.Local.fPrice)
+				f.Intrinsic.Control.If(v.Screen.F_ImportPrice!Qty0.Visible)
+					v.Local.fQty.Set(v.Screen.F_ImportPrice!Qty0.Caption)
+					v.Local.fContractPrice.Set(v.DataTable.[v.Local.sDataTable](v.Local.iCnt).Qty0!FieldVal)
+					f.Intrinsic.Math.Round(v.Local.fContractPrice, 4, v.Local.fContractPrice)
+					
+					f.Intrinsic.Control.If(v.Local.fPrice, >, 0)
+					f.Intrinsic.Control.AndIf(v.Local.fContractPrice, >, 0)
+						f.Intrinsic.Math.Div( v.Local.fContractPrice, v.Local.fPrice, v.Local.fPercentage)				
+						f.Intrinsic.Math.Round(v.Local.fPercentage, 4, v.Local.fPercentage)
+					f.Intrinsic.Control.Else
+						v.Local.fPercentage.Set(1.00)
+					f.Intrinsic.Control.EndIf
+					
+					f.Data.DataTable.AddRow("gcg_5422_DT", "Part", v.Local.sPart, "Description", v.Local.sDescription, "PL", v.Local.sPL, "Customer", v.Local.sCustomer, "CustomerName", v.Local.sCustomerName, "QTY", v.Local.fQty, "Price", v.Local.fContractPrice, "ContractPrice", v.Local.fContractPrice, "Percentage", v.Local.fPercentage)
+				f.Intrinsic.Control.EndIf
+				
+				f.Intrinsic.Control.If(v.Screen.F_ImportPrice!Qty1.Visible)
+					v.Local.fQty.Set(v.Screen.F_ImportPrice!Qty1.Caption)
+					v.Local.fContractPrice.Set(v.DataTable.[v.Local.sDataTable](v.Local.iCnt).Qty1!FieldVal)
+					f.Intrinsic.Math.Round(v.Local.fContractPrice, 4, v.Local.fContractPrice)
+					
+					f.Intrinsic.Control.If(v.Local.fPrice, >, 0)
+					f.Intrinsic.Control.AndIf(v.Local.fContractPrice, >, 0)
+						f.Intrinsic.Math.Div( v.Local.fContractPrice, v.Local.fPrice, v.Local.fPercentage)
+						f.Intrinsic.Math.Round(v.Local.fPercentage, 4, v.Local.fPercentage)
+					f.Intrinsic.Control.Else
+						v.Local.fPercentage.Set(1.00)
+					f.Intrinsic.Control.EndIf
+					
+					f.Data.DataTable.AddRow("gcg_5422_DT", "Part", v.Local.sPart, "Description", v.Local.sDescription, "PL", v.Local.sPL, "Customer", v.Local.sCustomer, "CustomerName", v.Local.sCustomerName, "QTY", v.Local.fQty, "Price", v.Local.fContractPrice, "ContractPrice", v.Local.fContractPrice, "Percentage", v.Local.fPercentage)
+				f.Intrinsic.Control.EndIf
+				
+				f.Intrinsic.Control.If(v.Screen.F_ImportPrice!Qty2.Visible)
+					v.Local.fQty.Set(v.Screen.F_ImportPrice!Qty2.Caption)
+					v.Local.fContractPrice.Set(v.DataTable.[v.Local.sDataTable](v.Local.iCnt).Qty2!FieldVal)
+					f.Intrinsic.Math.Round(v.Local.fContractPrice, 4, v.Local.fContractPrice)
+					
+					f.Intrinsic.Control.If(v.Local.fPrice, >, 0)
+					f.Intrinsic.Control.AndIf(v.Local.fContractPrice, >, 0)
+						f.Intrinsic.Math.Div( v.Local.fContractPrice, v.Local.fPrice, v.Local.fPercentage)
+						f.Intrinsic.Math.Round(v.Local.fPercentage, 4, v.Local.fPercentage)
+					f.Intrinsic.Control.Else
+						v.Local.fPercentage.Set(1.00)
+					f.Intrinsic.Control.EndIf
+					
+					f.Data.DataTable.AddRow("gcg_5422_DT", "Part", v.Local.sPart, "Description", v.Local.sDescription, "PL", v.Local.sPL, "Customer", v.Local.sCustomer, "CustomerName", v.Local.sCustomerName, "QTY", v.Local.fQty, "Price", v.Local.fContractPrice, "ContractPrice", v.Local.fContractPrice, "Percentage", v.Local.fPercentage)
+				f.Intrinsic.Control.EndIf
+				
+				f.Intrinsic.Control.If(v.Screen.F_ImportPrice!Qty3.Visible)
+					v.Local.fQty.Set(v.Screen.F_ImportPrice!Qty3.Caption)
+					v.Local.fContractPrice.Set(v.DataTable.[v.Local.sDataTable](v.Local.iCnt).Qty3!FieldVal)
+					f.Intrinsic.Math.Round(v.Local.fContractPrice, 4, v.Local.fContractPrice)
+					
+					f.Intrinsic.Control.If(v.Local.fPrice, >, 0)
+					f.Intrinsic.Control.AndIf(v.Local.fContractPrice, >, 0)
+						f.Intrinsic.Math.Div( v.Local.fContractPrice, v.Local.fPrice, v.Local.fPercentage)
+						f.Intrinsic.Math.Round(v.Local.fPercentage, 4, v.Local.fPercentage)
+					f.Intrinsic.Control.Else
+						v.Local.fPercentage.Set(1.00)
+					f.Intrinsic.Control.EndIf
+					
+					f.Data.DataTable.AddRow("gcg_5422_DT", "Part", v.Local.sPart, "Description", v.Local.sDescription, "PL", v.Local.sPL, "Customer", v.Local.sCustomer, "CustomerName", v.Local.sCustomerName, "QTY", v.Local.fQty, "Price", v.Local.fContractPrice, "ContractPrice", v.Local.fContractPrice, "Percentage", v.Local.fPercentage)
+				f.Intrinsic.Control.EndIf
+				
+				f.Intrinsic.Control.If(v.Screen.F_ImportPrice!Qty4.Visible)
+					v.Local.fQty.Set(v.Screen.F_ImportPrice!Qty4.Caption)
+					v.Local.fContractPrice.Set(v.DataTable.[v.Local.sDataTable](v.Local.iCnt).Qty4!FieldVal)
+					f.Intrinsic.Math.Round(v.Local.fContractPrice, 4, v.Local.fContractPrice)
+					
+					f.Intrinsic.Control.If(v.Local.fPrice, >, 0)
+					f.Intrinsic.Control.AndIf(v.Local.fContractPrice, >, 0)
+						f.Intrinsic.Math.Div( v.Local.fContractPrice, v.Local.fPrice, v.Local.fPercentage)
+						f.Intrinsic.Math.Round(v.Local.fPercentage, 4, v.Local.fPercentage)
+					f.Intrinsic.Control.Else
+						v.Local.fPercentage.Set(1.00)
+					f.Intrinsic.Control.EndIf
+					
+					f.Data.DataTable.AddRow("gcg_5422_DT", "Part", v.Local.sPart, "Description", v.Local.sDescription, "PL", v.Local.sPL, "Customer", v.Local.sCustomer, "CustomerName", v.Local.sCustomerName, "QTY", v.Local.fQty, "Price", v.Local.fContractPrice, "ContractPrice", v.Local.fContractPrice, "Percentage", v.Local.fPercentage)
+				f.Intrinsic.Control.EndIf
+				
+			f.Intrinsic.Control.EndIf
+			
+		f.Intrinsic.Control.Next(v.Local.iCnt)
+		
+'		f.Data.Dictionary.SetDefaultReturn("customerDictionary", "  ")
+'		f.Data.DataTable.FillFromDictionary("gcg_5422_DT", "customerDictionary", "CustomerName")
+'		
+'		f.Data.Dictionary.SetDefaultReturn("productLineDictionary", "  ")
+'		f.Data.DataTable.FillFromDictionary("gcg_5422_DT", "productLineDictionary", "PL")
+		'f.Data.DataTable.FillFromDictionary("gcg_5422_DT", "pricetLineDictionary", "Price")
+	f.Intrinsic.Control.EndIf
+	f.Data.DataView.Close("dataTablesAcc", "dtName")
+	
+'********************************************************************************************************************************************************************************************************************************
+'For testing without PL Data
+'f.Intrinsic.Control.If(True)
+'	f.Intrinsic.Control.For(v.Local.iCnt, 0, v.DataTable.gcg_5422_DT.RowCount--, 1)
+'		f.Data.DataTable.SetValue("gcg_5422_DT", v.Local.iCnt, "PL", "TS")
+'	f.Intrinsic.Control.Next(v.Local.iCnt)
+'f.Intrinsic.Control.EndIf
+
+
+'********************************************************************************************************************************************************************************************************************************
+	f.Data.DataTable.AcceptChanges("gcg_5422_DT")
+	f.ODBC.Connection!con.OpenCompanyConnection
+		f.Data.DataTable.SaveToDB("gcg_5422_DT", "con", "GCG_5422_Contract_P", "Part*!*Customer*!*Qty", 256)
+	f.ODBC.Connection!con.Close
+	
+	f.Data.DataTable.Close("gcg_5422_DT")
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.addDataFromImport.End
+
+Program.Sub.cmdSaveAll_Click.Start
+v.Local.iRet.Declare
+v.Local.iCnt.Declare
+
+v.Local.sCustomer.Declare
+f.Intrinsic.Control.Try
+	'46381
+	f.Intrinsic.UI.Msgbox("Are you sure you wish to upload all Tables?", "", 3, v.Local.iRet)
+	f.Intrinsic.Control.If(v.Local.iRet, =, 6)
+		gui.F_ImportPrice..Enabled(False)
+		f.Intrinsic.UI.InvokeWaitDialog("Uploading...")
+		f.Intrinsic.UI.SetWaitDialogAlwaysOnTop(True)
+		f.Intrinsic.Control.For(v.Local.iCnt, 0, v.DataTable.dataTablesAcc.RowCount--, 1)
+			'Get Customer
+			v.Local.sCustomer.Set(v.DataTable.dataTablesAcc(v.Local.iCnt).CustomerNumber!FieldValTrim)
+			'Set Customer Account
+			gui.F_ImportPrice.cboAccounts.Text(v.Local.sCustomer.Trim)
+			'Refresh Grid to get all Qty and Prices.
+			f.Intrinsic.Control.CallSub(RefreshGrid)
+			'Uplaod single Table.
+			f.Intrinsic.Control.CallSub(addDataFromImport)
+		f.Intrinsic.Control.Next(v.Local.iCnt)
+		f.Intrinsic.UI.CloseWaitDialog
+		gui.F_ImportPrice..Enabled(True)
+	f.Intrinsic.Control.EndIf
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+Program.Sub.cmdSaveAll_Click.End
+
+
