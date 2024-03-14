@@ -1,0 +1,75 @@
+Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+v.Local.sSQL.Declare
+v.Local.fPrice.Declare
+v.Local.sPart.Declare
+v.Local.sPL.Declare
+v.Local.sCustName.Declare
+v.Local.sDesc.Declare
+f.Intrinsic.Control.Try
+'Try something
+	f.Intrinsic.Control.SelectCase(v.Args.Hook)
+		f.Intrinsic.Control.Case(45310)
+			Variable.Passed.000061.Set("Custom Save")
+		f.Intrinsic.Control.Case(45340)
+			f.Intrinsic.Control.If(Variable.Passed.000002.Trim, =, "")
+				f.Intrinsic.UI.Msgbox("Please Select a Customer.")
+				f.Intrinsic.Control.End
+			f.Intrinsic.Control.EndIf
+			
+			f.Intrinsic.Control.If(Variable.Passed.000001.Trim, =, "")
+				f.Intrinsic.UI.Msgbox("Please Select a Part Number.")
+				f.Intrinsic.Control.End
+			f.Intrinsic.Control.EndIf
+			
+			f.Intrinsic.Control.If(Variable.Passed.000003.Trim, =, "")
+				f.Intrinsic.UI.Msgbox("Please Input a Contract Price.")
+				f.Intrinsic.Control.End
+			f.Intrinsic.Control.EndIf
+			
+			'Join Part
+			f.Intrinsic.String.RPad(Variable.Passed.000001, " ", 17, v.Local.sPart)
+			f.Intrinsic.String.Build("{0}{1}", v.Local.sPart, Variable.Passed.000015, v.Local.sPart)
+			f.Intrinsic.String.RPad(v.Local.sPart, " ", 20, v.Local.sPart)
+			
+			f.ODBC.Connection!con.OpenCompanyConnection
+			 	'Get Extra data
+			 	'Desc
+			 	f.Intrinsic.String.Build("Select Description from V_INVENTORY_MSTR where part = '{0}' and Location = '{1}'", v.Local.sPart, Variable.Passed.000016, v.Local.sSQL)
+			 	f.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSQL, v.Local.sDesc)
+			 	'PL
+			 	f.Intrinsic.String.Build("Select Product_Line from V_INVENTORY_MSTR where part = '{0}' and Location = '{1}'", v.Local.sPart, Variable.Passed.000016, v.Local.sSQL)
+			 	f.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSQL, v.Local.sPL)
+			 	'CustName
+			 	f.Intrinsic.String.Build("Select Name_Customer from V_CUSTOMER_MASTER where Customer = '{0}'", Variable.Passed.000002, v.Local.sSQL)
+			 	f.ODBC.Connection!con.ExecuteAndReturn(v.Local.sSQL, v.Local.sCustName)
+			 	
+			 	f.Data.DataTable.CreateFromSQL("saveDT", "con", "select * from GCG_5422_CONTRACT_P where Part = -1", true)
+			 	f.Data.DataTable.DeleteRow("saveDT")
+			 	f.Data.DataTable.AcceptChanges("saveDT")
+			 	
+			 	f.Data.DataTable.AddRow("saveDT", "Part", v.Local.sPart, "PL", v.Local.sPL, "Customer", Variable.Passed.000002, "CustomerName", v.Local.sCustName, "QTY", 0, "Price", Variable.Passed.000003, "contractPrice", Variable.Passed.000003, "Percentage", 1)
+			 	
+			f.ODBC.Connection!con.Close
+			
+	f.Intrinsic.Control.EndSelect
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(ErrorMsg, CurrentSub, v.Ambient.CurrentSubroutine)
+f.Intrinsic.Control.EndTry
+
+Program.Sub.Main.End
+
+Program.Sub.ErrorMsg.Start
+v.Local.sError.Declare
+
+'Closes ODBC connection, default to connection : "con"
+'f.Intrinsic.Control.If(v.ODBC!con.State, =, 1)
+'	f.ODBC.Connection!con.Close
+'f.Intrinsic.Control.EndIf
+
+'Generic Error message.
+f.Intrinsic.String.Build("Project GCG_5422_CP_Screen.g2u {0}{0}Subroutine: {1}{0}Error: {2} with Description: {3}", v.Ambient.NewLine, v.Args.CurrentSub, v.Ambient.ErrorNumber, v.Ambient.ErrorDescription, v.Local.sError)
+f.Intrinsic.UI.Msgbox(v.Local.sError)
+Program.Sub.ErrorMsg.End
